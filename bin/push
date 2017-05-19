@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/maas/client/version.rb'
+
+# When to push manually
+system("gem push pkg/maas-client-#{Maas::Client::VERSION}.gem")
+system('gem list -r maas-client')
