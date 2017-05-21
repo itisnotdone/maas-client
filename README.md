@@ -78,11 +78,7 @@ $ bundle
 
 ```bash
 
-$ cd maas-client
-
-$ rspec
-
-Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 19 / 31 LOC (61.29%) covered.
+$ bundle exec rspec
 
 Maas::Client::MaasClient
   basic
@@ -96,19 +92,20 @@ Maas::Client::MaasClient
     can create a new user
     can delete a user
 
-Finished in 0.01436 seconds (files took 0.18745 seconds to load)
+Finished in 0.01254 seconds (files took 0.17329 seconds to load)
 7 examples, 0 failures
 
-Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 19 / 31 LOC (61.29%) covered.
+Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 17 / 25 LOC (68.0%) covered.
+
 ```
 
 ### To run simple tests with real world
 
 ```bash
-$ FIVEMAT_PROFILE=1; API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' rspec
+$ API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' bundle exec rspec
 
 # if you want to see the report with Fivemat format
-$ FIVEMAT_PROFILE=1; API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' rspec
+$ FIVEMAT_PROFILE=1; API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' bundle exec rspec
 
 Maas::Client::MaasClient
   basic
@@ -122,11 +119,10 @@ Maas::Client::MaasClient
     can create a new user
     can delete a user
 
-Finished in 0.36423 seconds (files took 0.15391 seconds to load)
+Finished in 0.30954 seconds (files took 0.17286 seconds to load)
 7 examples, 0 failures
 
-Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 28 / 31 LOC (90.32%) covered.
-
+Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 25 / 25 LOC (100.0%) covered.
 ```
 
 ### To release

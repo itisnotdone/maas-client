@@ -37,27 +37,12 @@ module Maas
         response = access_token.request(*arguments)
 
         if response.code == '200'
-          # puts response.code, \
-          # response.body.to_s, \
-          # response.body.class
-
-          begin
-            return JSON.parse(response.body)
-          rescue => e
-            # It used to heppen 
-            # when I was working with my MAAS server.
-            # But I am not sure why and when it happens exactly.
-            if e.class == JSON::ParserError
-              puts e.class
-              # retry
-            end
-          end
-
+          return JSON.parse(response.body)
         elsif response.code == '204'
-          # puts "No Content"
+          puts "No Content"
         else
-          raise "#{response.class} #{response.code}" \
-            "#{response.message} #{response.body}"
+          raise "#{response.class} #{response.code} \
+            #{response.message} #{response.body}"
         end
       end
     end
