@@ -1,7 +1,7 @@
-require_relative '../spec_helper'
+# frozen_string_literal: true
+require 'spec_helper'
 
 describe Maas::Client::MaasClient, :aggregate_failures do
-
   sample_user = 'someone'
 
   user_info = {
@@ -17,19 +17,16 @@ describe Maas::Client::MaasClient, :aggregate_failures do
       "http://#{ENV['MAAS_SERVER']}/MAAS/api/2.0"
     )
   else
-    api_key = 'A:B:C'
+    key = 'A:B:C'
     maas_server = 'http://maas.example.com/MAAS/api/2.0'
     before(:each) do
-      subject = Maas::Client::MaasClient.new(
-        api_key,
-        maas_server
-      )
+      subject = Maas::Client::MaasClient.new(key, maas_server)
       allow(subject).to receive(:request)
         .with(:get, '/wrongurl/')
         .and_raise(RuntimeError)
       allow(subject).to receive(:request)
         .with(:get, '/users/')
-        .and_return(Array.new)
+        .and_return([])
       allow(subject).to receive(:request)
         .with(:post, '/users/', user_info)
         .and_return(user_info)
@@ -77,18 +74,13 @@ describe Maas::Client::MaasClient, :aggregate_failures do
 
   context 'user management' do
     it 'can create a new user' do
-      expect(subject.request(
-        :post,
-        '/users/',
-        user_info
-      )).to include('username' => sample_user)
+      expect(subject.request(:post, '/users/', user_info))
+        .to include('username' => sample_user)
     end
 
     it 'can delete a user' do
-      expect(subject.request(
-        :delete,
-        "/users/#{sample_user}/"
-      )).to eq(nil)
+      expect(subject.request(:delete, "/users/#{sample_user}/"))
+        .to eq(nil)
     end
   end
 end

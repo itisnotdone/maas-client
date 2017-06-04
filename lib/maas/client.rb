@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'oauth'
 require 'oauth/signature/plaintext'
 require 'json'
@@ -34,10 +35,10 @@ module Maas
         arguments = [method, uri, param, default_param].compact
         response = access_token.request(*arguments)
 
-        if response.code == '200'
-          return JSON.parse(response.body)
-        elsif response.code == '204'
-          puts "No Content"
+        return JSON.parse(response.body) if response.code == '200'
+
+        if response.code == '204'
+          puts 'No Content'
         else
           raise "#{response.class} #{response.code} \
             #{response.message} #{response.body}"
