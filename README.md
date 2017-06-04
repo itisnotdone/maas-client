@@ -43,6 +43,12 @@ puts con.request(:get, "/dnsresources/")
 
 puts con.request(:get, "/ipaddresses/")
 
+myarr = []
+dns_records = con.request(:get, "/dnsresources/")
+dns_records.each_with_index { |item, index| myarr << item['fqdn'] }
+myarr
+
+
 ```
 
 ## Development and Contribution

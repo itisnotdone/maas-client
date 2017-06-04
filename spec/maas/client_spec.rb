@@ -1,5 +1,4 @@
 require_relative '../spec_helper'
-require 'pry'
 
 describe Maas::Client::MaasClient, :aggregate_failures do
 

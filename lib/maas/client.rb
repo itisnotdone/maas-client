@@ -1,8 +1,6 @@
-# require 'maas/client/version'
 require 'oauth'
 require 'oauth/signature/plaintext'
 require 'json'
-require 'pry'
 
 module Maas
   module Client
