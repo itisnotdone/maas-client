@@ -68,12 +68,18 @@ https://github.com/itisnotdone/maas-client/issues
 
 ```bash
 
-$ sudo apt install git build-essential ruby ruby-dev
+# Install RVM.
+# https://rvm.io/rvm/install
+$ echo progress-bar >> ~/.curlrc && curl -sSL https://get.rvm.io | bash
 
-$ sudo gem update rake
+# It depends on your development environment. See following thread if it does not work.
+# https://askubuntu.com/questions/121073/why-bash-profile-is-not-getting-sourced-when-opening-a-terminal
+$ source ~/.bash_profile
 
+# Download source.
 $ git clone https://github.com/itisnotdone/maas-client.git
 
+# This should install and create the ruby version and gemset specified at .ruby-version and .ruby-gemset.
 $ cd maas-client
 
 $ bundle
@@ -84,7 +90,7 @@ $ bundle
 
 ```bash
 
-$ bundle exec rspec
+$ rspec
 
 Maas::Client::MaasClient
   basic
@@ -108,7 +114,7 @@ Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 17 / 2
 ### To run simple tests with real world
 
 ```bash
-$ API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' bundle exec rspec
+$ API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' rspec
 
 # if you want to see the report with Fivemat format
 $ FIVEMAT_PROFILE=1; API_KEY='API_KEY' MAAS_SERVER='IP_OR_DOMAIN' bundle exec rspec
@@ -135,10 +141,7 @@ Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 25 / 2
 
 ```bash
 
-$ bundle exec rake release
-
-# When bundler fails to load 'rake' command
-$ bundle exec /usr/bin/rake release
+$ rake release
 
 ```
 
