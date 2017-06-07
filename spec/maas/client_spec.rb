@@ -43,13 +43,13 @@ describe Maas::Client::MaasClient, :aggregate_failures do
     end
 
     it 'has an access token' do
-      expect(subject.access_token).to \
-        be_an_instance_of(OAuth::AccessToken)
+      expect(subject.access_token)
+        .to be_an_instance_of(OAuth::AccessToken)
     end
 
     it 'can report for wrong requests' do
-      expect { subject.request(:get, '/wrongurl/') }.to \
-        raise_error(RuntimeError)
+      expect { subject.request(:get, '/wrongurl/') }
+        .to raise_error(RuntimeError)
     end
   end
 
