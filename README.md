@@ -140,8 +140,29 @@ Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 25 / 2
 ### To release
 
 ```bash
+$ git add $things
+
+$ git commit -m 'blahblah'
 
 $ rake release
+
+rake release --trace
+** Invoke release (first_time)
+** Invoke build (first_time)
+** Execute build
+maas-client x.x.xx built to pkg/maas-client-x.x.xx.gem.
+** Invoke release:guard_clean (first_time)
+** Execute release:guard_clean
+** Invoke release:source_control_push (first_time)
+** Execute release:source_control_push
+Tagged v0.1.13.
+Username for 'https://github.com': $id
+Password for 'https://id@github.com': 
+Pushed git commits and tags.
+** Invoke release:rubygem_push (first_time)
+** Execute release:rubygem_push
+Pushed maas-client x.x.xx to rubygems.org.
+** Execute release
 
 ```
 
