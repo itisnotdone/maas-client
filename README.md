@@ -155,7 +155,7 @@ maas-client x.x.xx built to pkg/maas-client-x.x.xx.gem.
 ** Execute release:guard_clean
 ** Invoke release:source_control_push (first_time)
 ** Execute release:source_control_push
-Tagged v0.1.13.
+Tagged vx.x.xx.
 Username for 'https://github.com': $id
 Password for 'https://id@github.com': 
 Pushed git commits and tags.

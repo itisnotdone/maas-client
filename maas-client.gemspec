@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.47.1'
 
   spec.add_runtime_dependency 'oauth', '~> 0.5.1'
-  spec.add_runtime_dependency 'json', '~> 2.0.3', '>= 1.8.3'
+  spec.add_runtime_dependency 'json', '~> 2.1.0'
 end
