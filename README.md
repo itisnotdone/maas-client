@@ -24,27 +24,27 @@ con = Maas::Client::MaasClient.new("#{CONSUMER_KEY}:#{KEY}:#{SECRET}",
 "http://#{IP_OR_DOMAIN_NAME}/MAAS/api/2.0")
 
 
-puts con.request(:get, "/users/")
+con.request(:get, ['users'])
 
-puts con.request(:get, "/users/?op=whoami")
+con.request(:get, ['users'], {'op' => 'whoami'})
 
-puts con.request(:post, "/users/", {"username" => "someone1",
-                                    "email" => "someone1@example.com",
-                                    "password" => "maasuser1",
-                                    "is_superuser" => 1})
+con.request(:post, ['users'], {'username' => 'someone1',
+                               'email' => 'someone1@example.com',
+                               'password' => 'maasuser1',
+                               'is_superuser' => 1})
 
-puts con.request(:get, "/account/?op=list_authorisation_tokens")
+con.request(:get, ['account'], {'op' => 'list_authorisation_tokens'})
 
-puts con.request(:post, "/account/?op=create_authorisation_token", {"name" => "mynewkey1"})
+con.request(:post, ['account'], {'op' => 'create_authorisation_token', 'name' => 'mynewkey1'})
 
-puts con.request(:post, "/account/?op=delete_authorisation_token", {"token_key" => "#{KEY}"})
+con.request(:post, ['account'], {'op' => 'delete_authorisation_token', 'token_key' => KEY})
 
-puts con.request(:get, "/dnsresources/")
+con.request(:get, ['dnsresources'])
 
-puts con.request(:get, "/ipaddresses/")
+con.request(:get, ['ipaddresses'])
 
 myarr = []
-dns_records = con.request(:get, "/dnsresources/")
+dns_records = con.request(:get, ['dnsresources'])
 dns_records.each_with_index { |item, index| myarr << item['fqdn'] }
 myarr
 
@@ -140,6 +140,9 @@ Coverage report generated for RSpec to /home/deploy/maas-client/coverage. 25 / 2
 ### To release
 
 ```bash
+vi lib/maas/client/version.rb
+# and increase release number.
+
 $ git add $things
 
 $ git commit -m 'blahblah'

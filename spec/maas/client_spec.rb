@@ -22,16 +22,16 @@ describe Maas::Client::MaasClient, :aggregate_failures do
     before(:each) do
       subject = Maas::Client::MaasClient.new(key, maas_server)
       allow(subject).to receive(:request)
-        .with(:get, '/wrongurl/')
+        .with(:get, ['wrongurl'])
         .and_raise(RuntimeError)
       allow(subject).to receive(:request)
-        .with(:get, '/users/')
+        .with(:get, ['users'])
         .and_return([])
       allow(subject).to receive(:request)
-        .with(:post, '/users/', user_info)
+        .with(:post, ['users'], user_info)
         .and_return(user_info)
       allow(subject).to receive(:request)
-        .with(:delete, "/users/#{sample_user}/")
+        .with(:delete, ['users', sample_user])
         .and_return(nil)
     end
   end
@@ -48,13 +48,13 @@ describe Maas::Client::MaasClient, :aggregate_failures do
     end
 
     it 'can report for wrong requests' do
-      expect { subject.request(:get, '/wrongurl/') }
+      expect { subject.request(:get, ['wrongurl']) }
         .to raise_error(RuntimeError)
     end
   end
 
   context 'user list' do
-    let(:user_list) { subject.request(:get, '/users/') }
+    let(:user_list) { subject.request(:get, ['users']) }
 
     it 'returns an array' do
       expect(user_list).to be_an_instance_of(Array)
@@ -74,12 +74,12 @@ describe Maas::Client::MaasClient, :aggregate_failures do
 
   context 'user management' do
     it 'can create a new user' do
-      expect(subject.request(:post, '/users/', user_info))
+      expect(subject.request(:post, ['users'], user_info))
         .to include('username' => sample_user)
     end
 
     it 'can delete a user' do
-      expect(subject.request(:delete, "/users/#{sample_user}/"))
+      expect(subject.request(:delete, ['users', sample_user]))
         .to eq(nil)
     end
   end

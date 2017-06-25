@@ -30,8 +30,9 @@ module Maas
         )
       end
 
-      def request(method, uri, param = nil)
+      def request(method, subject, param = nil)
         default_param = { 'Accept' => 'application/json' }
+        uri = '/' + subject.join('/') + '/'
         arguments = [method, uri, param, default_param].compact
         response = access_token.request(*arguments)
 
