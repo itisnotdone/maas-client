@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'oauth', '~> 0.5.1'
   spec.add_runtime_dependency 'json', '~> 2.1.0'
   spec.add_runtime_dependency 'thor', '~> 0.19.0'
-  spec.add_runtime_dependency 'activesupport', '~> 4.2.8'
+  spec.add_runtime_dependency 'activesupport', '~> 4.2.6'
 end
