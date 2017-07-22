@@ -1,0 +1,4 @@
+maas:
+  key: K:E:Y
+  url: http://maas.example.com/MAAS/api/2.0
+

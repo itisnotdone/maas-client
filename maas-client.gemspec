@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.bindir        = 'bin'
+  spec.executables   = ['rbmaas']
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = '~> 2.3.1'
@@ -31,4 +32,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'oauth', '~> 0.5.1'
   spec.add_runtime_dependency 'json', '~> 2.1.0'
+  spec.add_runtime_dependency 'thor', '~> 0.19.0'
+  spec.add_runtime_dependency 'activesupport', '~> 4.2.8'
 end
