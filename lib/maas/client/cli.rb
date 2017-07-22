@@ -11,7 +11,7 @@ module Maas
       # DO NOT DUPLICATE EXISTING 'maas' COMMAND.
       include Maas::Client::Util
 
-      attr_accessor :conn
+      attr_reader :conn
 
       def initialize(*args)
         super
@@ -90,6 +90,7 @@ module Maas
               printf "%-20s %-20s %s\n", r[:ip], hostname, r[:fqdn]
             end
           end
+          puts "# Updated date: #{Time.now.to_s}"
         else
           puts "To generate #{resource} is not available."
         end
