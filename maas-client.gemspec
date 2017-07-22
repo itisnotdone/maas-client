@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.executables   = ['rbmaas']
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '~> 2.3.1'
+  spec.required_ruby_version = '>= 2.3.1'
 
   spec.add_development_dependency 'rake', '~> 10.5'
   spec.add_development_dependency 'rspec', '~> 3.5'
