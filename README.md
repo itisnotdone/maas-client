@@ -48,9 +48,11 @@ dns_records = con.request(:get, ['dnsresources'])
 dns_records.each_with_index { |item, index| myarr << item['fqdn'] }
 myarr
 
-
 ```
-
+```bash
+# to generate hosts file
+rbmaas generate hosts
+```
 ## Development and Contribution
 
 Questions and pull requests are always welcome!
