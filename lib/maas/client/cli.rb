@@ -1,16 +1,12 @@
 require 'thor'
 require 'maas/client'
-require 'maas/client/util'
-require 'pry'
-require 'yaml'
+require 'maas/client/config'
 
 module Maas
   module Client
     class CLI < Thor
       package_name 'maas-client'
       # DO NOT DUPLICATE EXISTING 'maas' COMMAND.
-      include Maas::Client::Util
-
       attr_reader :conn
 
       def initialize(*args)
@@ -20,30 +16,16 @@ module Maas
 
       no_commands do
         def init_rbmaas
-          user_rbmaas_home = Dir.home + '/.rbmaas'
-          maas_config = {}
-          maas_config[:user_rbmaas_home] = user_rbmaas_home
-          if not File.directory?(user_rbmaas_home)
-            puts 'Creating home directory..'
-            FileUtils.mkdir(user_rbmaas_home)
+          maas_config = Maas::Client::Config.config
+          if File.exists?(maas_config[:conf_file])
+            Maas::Client::Config.set_config
+            Maas::Client::MaasClient.new(
+              maas_config[:maas][:key],
+              maas_config[:maas][:url]
+            )
+          else
+            Maas::Client::Config.init_config
           end
-
-          lib_dir = Gem::Specification.find_by_name("maas-client").gem_dir
-          maas_config[:lib_dir] = lib_dir
-          conf_file = user_rbmaas_home + '/rbmaas.yml'
-          if not File.exists?(conf_file)
-            src = File.new(lib_dir + '/lib/maas/client/template/rbmaas.yml')
-            dst = Dir.new(user_rbmaas_home)
-            puts 'Copying sample rbmaas.yml..'
-            FileUtils.cp(src, dst)
-            abort("Please define default configuration for rbmaas at #{conf_file}")
-          end
-
-          maas_config.merge!(symbolize_keys(YAML.load_file(conf_file)))
-          conn = Maas::Client::MaasClient.new(
-            maas_config[:maas][:key],
-            maas_config[:maas][:url]
-          )
         end
       end
 
@@ -59,7 +41,8 @@ module Maas
           end
 
           if domains == []
-            abort("There is no dnsresource to clear.")
+            puts "There is no dnsresource to clear."
+            return nil
           end
 
           domains.each do |d|
@@ -73,6 +56,8 @@ module Maas
 
       desc 'generate', "Generate custom data."
       def generate(resource)
+        # clear dnsresources before generation
+        invoke :clear, ['dns']
         case resource
         when 'hosts'
           records = []

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'spec_helper'
+require 'maas/client/config'
 
 describe Maas::Client::MaasClient, :aggregate_failures do
   sample_user = 'someone'
@@ -11,12 +12,16 @@ describe Maas::Client::MaasClient, :aggregate_failures do
     'is_superuser' => 1
   }
 
-  if ENV['API_KEY'] && ENV['MAAS_SERVER']
+  maas_config = Maas::Client::Config.config
+  if File.exists?(maas_config[:conf_file])
+    puts "#{maas_config[:conf_file]} exist."
+    Maas::Client::Config.set_config
     subject = Maas::Client::MaasClient.new(
-      ENV['API_KEY'].to_s,
-      "http://#{ENV['MAAS_SERVER']}/MAAS/api/2.0"
+      maas_config[:maas][:key],
+      maas_config[:maas][:url]
     )
   else
+    puts "#{maas_config[:conf_file]} does not exist."
     key = 'A:B:C'
     maas_server = 'http://maas.example.com/MAAS/api/2.0'
     before(:each) do
