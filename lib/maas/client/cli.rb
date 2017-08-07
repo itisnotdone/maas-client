@@ -64,6 +64,13 @@ module Maas
           conn.request(:get, ['dnsresources']).each do |d|
             records << { ip: d['ip_addresses'][0]['ip'], fqdn: d['fqdn'] }
           end
+
+          conn.request(:get, ['machines']).each do |m|
+            if m['ip_addresses'] != []
+              records << { ip: m['ip_addresses'][0], fqdn: m['fqdn'] }
+            end
+          end
+
           records.sort_by! { |h| h[:fqdn] }
           domain = conn.request(:get, ['domains'])[0]['name']
           to_slice = ".#{domain}"
