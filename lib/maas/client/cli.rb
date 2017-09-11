@@ -47,7 +47,16 @@ module Maas
 
           domains.each do |d|
             puts "Deleting #{d[:fqdn]}..."
-            conn.request(:delete, ['dnsresources', d[:id].to_s])
+            puts 'Do you really want to delete this? y or n'
+            answer = gets.chomp
+            case answer
+            when 'y'
+              conn.request(:delete, ['dnsresources', d[:id].to_s])
+            when 'n'
+              puts "Canceling to delete #{d[:fqdn]}..."
+            else
+              puts 'Invalid input was entered.'
+            end
           end
         else
           puts "To clear #{resource} is not available."
