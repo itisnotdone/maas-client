@@ -47,15 +47,17 @@ module Maas
 
           domains.each do |d|
             puts "Deleting #{d[:fqdn]}..."
-            puts 'Do you really want to delete this? y or n'
-            answer = gets.chomp
+            # use Thor basic functions such as 'ask' or 'say'
+            answer = ask(
+              'Do you really want to delete this?',
+              :echo => true,
+              :limited_to => ['y', 'n']
+            )
             case answer
             when 'y'
               conn.request(:delete, ['dnsresources', d[:id].to_s])
             when 'n'
               puts "Canceling to delete #{d[:fqdn]}..."
-            else
-              puts 'Invalid input was entered.'
             end
           end
         else
