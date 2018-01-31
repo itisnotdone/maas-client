@@ -21,15 +21,15 @@ Gem::Specification.new do |spec|
   spec.executables   = ['rbmaas']
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'rake', '~> 10.5'
-  spec.add_development_dependency 'rspec', '~> 3.5'
-  spec.add_development_dependency 'simplecov', '~> 0.13.0'
-  spec.add_development_dependency 'fivemat', '~> 1.3'
-  spec.add_development_dependency 'cane', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.47.1'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'fivemat'
+  spec.add_development_dependency 'cane'
+  spec.add_development_dependency 'rubocop'
 
-  spec.add_runtime_dependency 'oauth', '~> 0.5.1'
-  spec.add_runtime_dependency 'json', '~> 2.1.0'
-  spec.add_runtime_dependency 'thor', '~> 0.19.0'
-  spec.add_runtime_dependency 'activesupport', '~> 4.2.6'
+  spec.add_runtime_dependency 'oauth'
+  spec.add_runtime_dependency 'json'
+  spec.add_runtime_dependency 'thor'
+  spec.add_runtime_dependency 'activesupport'
 end
