@@ -20,6 +20,10 @@ $ gem install maas-client --no-ri --no-rdoc
 
 require "maas/client"
 
+# when ~/.rbmaas/rbmaas.yml is configured
+con = Maas::Client::MaasClient.new()
+
+# when manually configuring
 con = Maas::Client::MaasClient.new("#{CONSUMER_KEY}:#{KEY}:#{SECRET}",
 "http://#{IP_OR_DOMAIN_NAME}/MAAS/api/2.0")
 
@@ -52,6 +56,12 @@ myarr
 ```bash
 # to generate hosts file
 rbmaas generate hosts
+
+# to disused resources
+rbmaas clear
+
+# to initialize MAAS as defined in a yaml file
+rbmaas init -f maas.yml
 ```
 ## Development and Contribution
 

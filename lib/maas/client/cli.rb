@@ -16,12 +16,11 @@ module Maas
 
       no_commands do
         def init_rbmaas
-          maas_config = Maas::Client::Config.config
-          if File.exists?(maas_config[:conf_file])
+          if File.exists?(Maas::Client::Config.config[:conf_file])
             Maas::Client::Config.set_config
             Maas::Client::MaasClient.new(
-              maas_config[:maas][:key],
-              maas_config[:maas][:url]
+              Maas::Client::Config.config[:maas][:key],
+              Maas::Client::Config.config[:maas][:url]
             )
           else
             Maas::Client::Config.init_config
@@ -29,7 +28,7 @@ module Maas
         end
       end
 
-      desc 'clear', "Clear unused resources."
+      desc 'clear', "Clear disused resources."
       def clear(resource)
         case resource
         when 'dns'

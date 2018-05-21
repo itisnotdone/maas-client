@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+require 'maas/client/config'
 require 'oauth'
 require 'oauth/signature/plaintext'
 require 'json'
@@ -9,12 +9,20 @@ module Maas
     class MaasClient
       attr_reader :access_token
 
-      def initialize(api_key, endpoint)
-        @api_key = api_key
+      def initialize(api_key = nil, endpoint = nil)
+        if api_key and endpoint
+          @api_key = api_key
+          @endpoint = endpoint
+        elsif File.exists?(Maas::Client::Config.config[:conf_file])
+          Maas::Client::Config.set_config
+          @api_key = Maas::Client::Config.config[:maas][:key]
+          @endpoint = Maas::Client::Config.config[:maas][:url]
+        else
+          abort("There is no server Info provided.")
+        end
         @consumer_key = @api_key.split(/:/)[0]
         @key = @api_key.split(/:/)[1]
         @secret = @api_key.split(/:/)[2]
-        @endpoint = endpoint
         consumer = OAuth::Consumer.new(
           @consumer_key,
           '',
