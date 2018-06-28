@@ -6,6 +6,10 @@ This is a simple client library for MAAS, Metal as a Service, written in Ruby.
 
 ```ruby
 
+# https://github.com/typhoeus/typhoeus/issues/390
+# since 0.3.0
+$ sudo apt install libcurl4-openssl-dev
+
 $ bundle
 
 # Or install it yourself as:
