@@ -180,11 +180,15 @@ Pushed maas-client x.x.xx to rubygems.org.
 ** Execute release
 
 ```
+
 ## Reference
 https://docs.maas.io/2.4/en/api-authentication
 https://github.com/oauth-xx/oauth-ruby
 https://github.com/typhoeus/typhoeus
 https://docs.maas.io/2.4/en/api
+
+## rubygems
+https://rubygems.org/gems/maas-client
 
 ## License
 
