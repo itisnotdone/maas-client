@@ -32,4 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'json'
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'activesupport'
+  spec.add_runtime_dependency 'hashie'
+  spec.add_runtime_dependency 'typhoeus'
 end

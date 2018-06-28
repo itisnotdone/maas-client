@@ -1,7 +1,10 @@
 require 'maas/client/config'
 require 'oauth'
 require 'oauth/signature/plaintext'
+require 'oauth/request_proxy/typhoeus_request'
 require 'json'
+require 'hashie'
+require 'typhoeus'
 
 module Maas
   module Client
@@ -10,6 +13,7 @@ module Maas
       attr_reader :access_token
 
       def initialize(api_key = nil, endpoint = nil)
+
         if api_key and endpoint
           @api_key = api_key
           @endpoint = endpoint
@@ -20,17 +24,20 @@ module Maas
         else
           abort("There is no server Info provided.")
         end
+
         @consumer_key = @api_key.split(/:/)[0]
         @key = @api_key.split(/:/)[1]
         @secret = @api_key.split(/:/)[2]
+
         consumer = OAuth::Consumer.new(
-          @consumer_key,
-          '',
-          realm: '',
-          site: @endpoint,
-          scheme: :header,
-          signature_method: 'PLAINTEXT'
+          @consumer_key, '',
+          {
+            :site => @endpoint,
+            :scheme => :header,
+            :signature_method => "PLAINTEXT"
+          }
         )
+
         @access_token = OAuth::AccessToken.new(
           consumer,
           @key,
@@ -39,21 +46,67 @@ module Maas
       end
 
       def request(method, subject, param = nil)
-        default_param = {
-          'Accept' => 'application/json',
-          'Content-Type' => 'multipart/form-data'
+
+        headers = {Accept: 'application/json'}
+
+        uri = access_token.consumer.options[:site] + 
+          '/' + 
+          subject.join('/') + 
+          '/'
+
+
+        oauth_params = {
+          :consumer => access_token.consumer, 
+          :token => access_token
         }
-        uri = '/' + subject.join('/') + '/'
-        arguments = [method, uri, param, default_param].compact
-        response = access_token.request(*arguments)
 
-        return JSON.parse(response.body) if response.code == '200'
+        hydra = Typhoeus::Hydra.new
 
-        if response.code == '204'
+        Hashie.symbolize_keys! param if param
+
+        options = {
+          method: method,
+          headers: headers
+        }
+
+# https://github.com/typhoeus/typhoeus#sending-params-in-the-body-with-put
+        if method == :get
+          options.merge!({params: param})
+        elsif method == :post
+          options.merge!({body: param})
+          headers.merge!(
+            {'Content-Type'=> "application/x-www-form-urlencoded"}
+          )
+        end
+
+        req = Typhoeus::Request.new(uri, options)
+
+        oauth_helper = OAuth::Client::Helper.new(
+          req,
+          oauth_params.merge(
+            {
+              request_uri: uri,
+              signature_method: access_token
+              .consumer
+              .options[:signature_method]
+            }
+          )
+        )
+
+        req.options[:headers].merge!(
+          { "Authorization" => oauth_helper.header }
+        )
+
+        hydra.queue(req); hydra.run
+        response = req.response
+
+        return JSON.parse(response.body) if response.code == 200
+
+        if response.code == 204
           puts 'No Content'
         else
           raise "#{response.class} #{response.code} \
-            #{response.message} #{response.body}"
+            #{response.status_message} #{response.body}"
         end
       end
     end
