@@ -31,6 +31,8 @@ con = Maas::Client::MaasClient.new()
 con = Maas::Client::MaasClient.new("#{CONSUMER_KEY}:#{KEY}:#{SECRET}",
 "http://#{IP_OR_DOMAIN_NAME}/MAAS/api/2.0")
 
+# use cases
+con.request(:get, ['maas'], {'op' => 'get_config', 'name' => 'main_archive'})
 
 con.request(:get, ['users'])
 
@@ -54,7 +56,7 @@ con.request(:get, ['ipaddresses'])
 myarr = []
 dns_records = con.request(:get, ['dnsresources'])
 dns_records.each_with_index { |item, index| myarr << item['fqdn'] }
-myarr
+pp myarr
 
 ```
 ```bash

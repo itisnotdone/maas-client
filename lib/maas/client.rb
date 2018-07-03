@@ -100,14 +100,25 @@ module Maas
         hydra.queue(req); hydra.run
         response = req.response
 
-        return JSON.parse(response.body) if response.code == 200
-
-        if response.code == 204
+        if response.code == 200
+          if valid_json?(response.body)
+            return JSON.parse(response.body)
+          else
+            return response.body
+          end
+        elsif response.code == 204
           puts 'No Content'
         else
           raise "#{response.class} #{response.code} \
             #{response.status_message} #{response.body}"
         end
+      end
+
+      def valid_json?(json)
+        JSON.parse(json)
+        return true
+      rescue JSON::ParserError => e
+        return false
       end
     end
   end
