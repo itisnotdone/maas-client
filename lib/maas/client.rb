@@ -70,9 +70,9 @@ module Maas
         }
 
 # https://github.com/typhoeus/typhoeus#sending-params-in-the-body-with-put
-        if method == :get
+        if [:get].include? method
           options.merge!({params: param})
-        elsif method == :post
+        elsif [:post, :put].include? method
           options.merge!({body: param})
           headers.merge!(
             {'Content-Type'=> "application/x-www-form-urlencoded"}
